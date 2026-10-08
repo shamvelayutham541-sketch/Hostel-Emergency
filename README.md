@@ -1,6 +1,10 @@
 # 🚨 HostelSOS — Hostel Emergency Help & Rapid Response Management System
 
 <p align="center">
+  <a href="https://hostelsos-seven.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/LIVE_DEMO-hostelsos--seven.vercel.app-success?style=for-the-badge&logo=vercel" alt="Live Demo" />
+  </a>
+  <br/><br/>
   <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
   <img src="https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js&logoColor=white" />
   <img src="https://img.shields.io/badge/Socket.IO-Real--time-010101?style=for-the-badge&logo=socket.io" />
@@ -8,7 +12,10 @@
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" />
 </p>
 
+> **Live Website:** [https://hostelsos-seven.vercel.app](https://hostelsos-seven.vercel.app)
+> 
 > A production-quality platform where hostel students can raise an emergency in one tap, and wardens, security, medical & maintenance staff can respond, track and resolve it in real time.
+
 
 ---
 
