@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: hostelsos-api
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: node server/src/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        value: https://hostelsos.vercel.app
+    healthCheckPath: /api/health
+

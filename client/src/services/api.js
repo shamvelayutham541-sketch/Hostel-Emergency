@@ -3,7 +3,9 @@
  * Intercepts requests, attaches JWT headers, handles automatic renewal and error notifications.
  */
 
-const API_BASE_URL = '/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api/v1`
+  : '/api/v1';
 
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem('hostelsos_access_token');
