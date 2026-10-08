@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: HostelSOS Rapid Emergency Response Management System API
+  description: >
+    Production REST and WebSocket API for the HostelSOS platform.
+    Empowers students to trigger one-tap emergency SOS alerts and enables
+    wardens, security, medical, and maintenance staff to coordinate rapid responses in real-time.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local Development Server
+  - url: https://api.hostelsos.yourcampus.edu/api/v1
+    description: Production Cluster
+paths:
+  /auth/register:
+    post:
+      summary: Register a new student account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, name, studentId, phone, blockName, roomNumber]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, minLength: 6 }
+                name: { type: string }
+                studentId: { type: string }
+                phone: { type: string }
+                blockName: { type: string }
+                roomNumber: { type: string }
+                floor: { type: integer }
+                bloodGroup: { type: string }
+                allergies: { type: string }
+      responses:
+        201:
+          description: Student registered successfully with JWT tokens
+  /auth/login:
+    post:
+      summary: Authenticate user & retrieve access and refresh JWTs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        200:
+          description: Login successful
+  /incidents:
+    get:
+      summary: List incidents with filters (status, priority, type, block, myAssigned)
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Array of filtered incidents
+    post:
+      summary: Raise a new emergency incident / SOS
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [type]
+              properties:
+                type: { type: string, enum: [medical, fire, electrical, lockout, plumbing, security, other] }
+                priority: { type: string, enum: [critical, high, normal] }
+                description: { type: string }
+                isSilent: { type: boolean }
+                isAnonymous: { type: boolean }
+                gps:
+                  type: object
+                  properties:
+                    latitude: { type: number }
+                    longitude: { type: number }
+      responses:
+        201:
+          description: Emergency created and dispatched in real-time
+  /incidents/{id}:
+    get:
+      summary: Get full incident timeline, messages, assignments and medical card
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200:
+          description: Incident details with audit timeline and chat
+  /incidents/{id}/status:
+    patch:
+      summary: Update incident resolution lifecycle status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: { type: string, enum: [pending, acknowledged, en_route, in_progress, resolved, closed, false_alarm] }
+                note: { type: string }
+      responses:
+        200:
+          description: Status updated
+  /broadcasts:
+    get:
+      summary: List campus safety broadcasts
+      responses:
+        200:
+          description: Broadcast list
+    post:
+      summary: Publish hostel-wide panic alert or safety drill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, message]
+              properties:
+                title: { type: string }
+                message: { type: string }
+                target: { type: string, enum: [all, hostel, block] }
+                isDrill: { type: boolean }
+      responses:
+        201:
+          description: Broadcast sent
+  /analytics/dashboard:
+    get:
+      summary: Retrieve SLA performance metrics, category breakdown, heatmap and staff leaderboard
+      responses:
+        200:
+          description: Analytics dashboard dataset
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

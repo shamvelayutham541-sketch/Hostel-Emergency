@@ -1,0 +1,27 @@
+{
+  "name": "hostel-sos-platform",
+  "version": "1.0.0",
+  "description": "Hostel Emergency Help & Rapid Response Management System (HostelSOS)",
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "seed": "cd server && npm run seed",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "emergency-response",
+    "hostel-safety",
+    "sos",
+    "campus-security",
+    "react",
+    "nodejs",
+    "socketio"
+  ],
+  "author": "HostelSOS Engineering Team",
+  "license": "MIT"
+}
